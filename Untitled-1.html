@@ -1,0 +1,71 @@
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Menu, X, ShieldCheck } from "lucide-react";
+
+const links = [
+  ["Home", "#home"],
+  ["About", "#about"],
+  ["Skills", "#skills"],
+  ["Projects", "#projects"],
+  ["Security Lab", "#security"],
+  ["Contact", "#contact"],
+];
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <motion.header
+      className="navbar"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.7 }}
+    >
+      <a href="#home" className="brand">
+        <span className="brand-icon">
+          <ShieldCheck size={21} />
+        </span>
+
+        <span>
+          AADITYA<span className="accent">.</span>
+        </span>
+      </a>
+
+      <nav className="desktop-nav">
+        {links.map(([name, href]) => (
+          <a key={name} href={href}>
+            {name}
+          </a>
+        ))}
+      </nav>
+
+      <button
+        className="mobile-menu"
+        onClick={() => setOpen(!open)}
+      >
+        {open ? <X /> : <Menu />}
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="mobile-nav"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            {links.map(([name, href]) => (
+              <a
+                key={name}
+                href={href}
+                onClick={() => setOpen(false)}
+              >
+                {name}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
+  );
+}
